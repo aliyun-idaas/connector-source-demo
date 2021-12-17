@@ -1,0 +1,30 @@
+{
+  "form": {
+    "baseUrl": "http://127.0.0.1"
+  },
+  "template": {
+    "formData": [
+      {
+        "key": "baseUrl",
+        "name": {
+          "zh": "基础url",
+          "en": "baseUrl"
+        },
+        "type": "input",
+        "readonly": false,
+        "placeholder": {
+          "zh": "请填写基础url",
+          "en": "Please input baseUrl"
+        },
+        "rules": {
+          "required": true,
+          "message": "请填写基础url",
+          "trigger": "blur"
+        },
+        "show": true,
+        "send": true,
+        "description": "基础url，demo演示用"
+      }
+    ]
+  }
+}
