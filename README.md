@@ -40,7 +40,7 @@ connector数据源(source)实现demo
 
 4. 按照开发文档开发插件，完成后，把插件打包成jar包，上传到connector项目的lib目录下，然后重启connector
 
-4.后续的如何进行开发，查看相关文档
+## 后续的如何进行开发，查看相关文档
 
 
 开发文档：https://idp4.idsmanager.com/docs/%E5%B8%B8%E7%94%A8%E9%9B%86%E6%88%90%E6%96%B9%E6%A1%88/Connector%E8%87%AA%E5%AE%9A%E4%B9%89%E6%BA%90%E6%88%96%E7%9B%AE%E6%A0%87.html#id2
