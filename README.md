@@ -37,7 +37,7 @@ connector数据源(source)实现demo
         </dependency>
     </dependencies>
 ```
-
+3. 把工程打包成jar包，上传到connector项目的lib目录下，重启connector，然后进行调试。
 4. 按照开发文档开发插件，完成后，把插件打包成jar包，上传到connector项目的lib目录下，然后重启connector
 
 ## 后续的如何进行开发，查看相关文档
