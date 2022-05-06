@@ -1,7 +1,8 @@
 # connector-source-demo
 connector数据源(source)实现demo
 
-
+## connector插件开发
+### 方式一（有connector主工程）
 查看pom.xml可得知，此demo需要以module的形式，放到connector主工程当中。
 
 
@@ -17,6 +18,27 @@ connector数据源(source)实现demo
     <version>${plugin.version}</version>
 </dependency>
 ```
+
+### 方式二（无connector主工程）
+当没有connector主工程的情况下，开发步骤如下：
+1. 下载当前的工程
+2. 在pom.xml引入开发所需要的sync-engine模块jar包和sync-api模块jar包
+```
+     <dependencies>
+        <dependency>
+            <groupId>com.idsmanager.micro</groupId>
+            <artifactId>sync-engine</artifactId>
+            <version>{version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.idsmanager.micro</groupId>
+            <artifactId>sync-api</artifactId>
+            <version>{version}</version>
+        </dependency>
+    </dependencies>
+```
+
+4. 按照开发文档开发插件，完成后，把插件打包成jar包，上传到connector项目的lib目录下，然后重启connector
 
 4.后续的如何进行开发，查看相关文档
 
