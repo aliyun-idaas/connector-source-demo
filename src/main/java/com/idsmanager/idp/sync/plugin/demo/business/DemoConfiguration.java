@@ -83,7 +83,7 @@ public class DemoConfiguration implements ConnectionConfiguration {
      **/
     @Override
     public String getMinorType() {
-        return MinorType.DEMO_SCHEMA.name();
+        return MetaBaseConstant.MINORTYPE_NAME;
     }
 
     @Override

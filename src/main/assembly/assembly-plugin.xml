@@ -1,0 +1,122 @@
+<assembly>
+    <!-- 打包文件名的标识符，用来做后缀-->
+    <id>jar-with-plugin</id>
+    <!-- formats是assembly插件支持的打包文件格式，有zip、tar、tar.gz、tar.bz2、jar、war。可以同时定义多个format。-->
+    <formats>
+        <format>jar</format>
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <dependencySets>
+        <!--    用来设置一组文件在打包时的属性。-->
+        <dependencySet>
+            <useProjectArtifact>true</useProjectArtifact>
+            <unpack>true</unpack>
+            <scope>runtime</scope>
+            <includes>
+                <include>io.jsonwebtoken:jjwt</include>
+            </includes>
+            <!--  runtime中已有的依赖  -->
+            <excludes>
+                <exclude>antlr:antlr</exclude>
+                <exclude>ch.qos.logback:logback-classic</exclude>
+                <exclude>ch.qos.logback:logback-core</exclude>
+                <exclude>cn.jpush.api:jpush-client</exclude>
+                <exclude>com.alibaba:fastjson</exclude>
+                <exclude>com.beust:jcommander</exclude>
+                <exclude>com.fasterxml:classmate</exclude>
+                <exclude>com.fasterxml.jackson.core:jackson-annotations</exclude>
+                <exclude>com.fasterxml.jackson.core:jackson-core</exclude>
+                <exclude>com.fasterxml.jackson.core:jackson-databind</exclude>
+                <exclude>com.fasterxml.jackson.dataformat:jackson-dataformat-smile</exclude>
+                <exclude>com.fasterxml.jackson.datatype:jackson-datatype-jdk8</exclude>
+                <exclude>com.fasterxml.jackson.datatype:jackson-datatype-jsr310</exclude>
+                <exclude>com.fasterxml.jackson.module:jackson-module-afterburner</exclude>
+                <exclude>com.fasterxml.jackson.module:jackson-module-parameter-names</exclude>
+                <exclude>com.google.code.findbugs:jsr305</exclude>
+                <exclude>com.google.code.gson</exclude>
+                <exclude>com.google.errorprone:error_prone_annotations</exclude>
+                <exclude>com.google.guava:guava</exclude>
+                <exclude>com.google.j2objc:j2objc-annotations</exclude>
+                <exclude>com.google.zxing:core</exclude>
+                <exclude>com.google.zxing:javase</exclude>
+                <exclude>com.google.j2objc:j2objc-annotations</exclude>
+                <exclude>com.idsmanager.boot:micro-commons</exclude>
+                <exclude>com.idsmanager.micro:sync-api</exclude>
+                <exclude>com.idsmanager.micro:sync-core-api</exclude>
+                <exclude>com.idsmanager.micro:sync-core-local</exclude>
+                <exclude>com.idsmanager.micro:sync-engine</exclude>
+                <exclude>com.idsmanager.micro:notify-email-local</exclude>
+                <exclude>com.idsmanager.micro:notify-email-remote</exclude>
+                <exclude>commons-beanutils:commons-beanutils</exclude>
+                <exclude>commons-codec:commons-codec</exclude>
+                <exclude>commons-collections:commons-collections</exclude>
+                <exclude>commons-discovery:commons-discovery</exclude>
+                <exclude>commons-io:commons-io</exclude>
+                <exclude>commons-lang:commons-lang</exclude>
+                <exclude>commons-logging:commons-logging</exclude>
+                <exclude>commons-net:commons-net</exclude>
+                <exclude>com.sun.istack:istack-commons-runtime</exclude>
+                <exclude>com.sun.xml.fastinfoset:FastInfoset</exclude>
+                <exclude>commons-beanutils:commons-beanutils</exclude>
+                <exclude>commons-codec:commons-codec</exclude>
+                <exclude>commons-collections:commons-collections</exclude>
+                <exclude>commons-io:commons-io</exclude>
+                <exclude>commons-lang:commons-lang</exclude>
+                <exclude>commons-logging:commons-logging</exclude>
+                <exclude>commons-net:commons-net</exclude>
+                <exclude>io.swagger:swagger-annotations</exclude>
+                <exclude>javax.activation:javax.activation-api</exclude>
+                <exclude>javax.persistence:javax.persistence-api</exclude>
+                <exclude>javax.validation:validation-api</exclude>
+                <exclude>javax.xml.bind:jaxb-api</exclude>
+                <exclude>net.bytebuddy:byte-buddy</exclude>
+                <exclude>net.sf.ezmorph:ezmorph</exclude>
+                <exclude>net.sf.json-lib:json-lib</exclude>
+                <exclude>commons-collections:commons-collections</exclude>
+                <exclude>org.apache.httpcomponents:httpclient</exclude>
+                <exclude>org.apache.httpcomponents:httpcore</exclude>
+                <exclude>org.codehaus.groovy:groovy-all</exclude>
+                <exclude>dom4j:dom4j</exclude>
+                <exclude>org.hibernate.common:hibernate-commons-annotations</exclude>
+                <exclude>org.hibernate.javax.persistence:hibernate-jpa-2.1-api</exclude>
+                <exclude>org.hibernate:hibernate-core</exclude>
+                <exclude>org.jboss.logging:jboss-logging</exclude>
+                <exclude>org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec</exclude>
+                <exclude>org.jboss:jandex</exclude>
+                <exclude>org.slf4j:slf4j-api</exclude>
+                <exclude>org.springframework.data:spring-data-commons</exclude>
+                <exclude>org.springframework.data:spring-data-jpa</exclude>
+                <exclude>org.springframework:spring-aop</exclude>
+                <exclude>org.springframework:spring-beans</exclude>
+                <exclude>org.springframework:spring-context</exclude>
+                <exclude>org.springframework:spring-core</exclude>
+                <exclude>org.springframework:spring-expression</exclude>
+                <exclude>org.springframework:spring-jcl</exclude>
+                <exclude>org.springframework:spring-jdbc</exclude>
+                <exclude>org.springframework:spring-orm</exclude>
+                <exclude>org.springframework:spring-tx</exclude>
+                <exclude>org.springframework:spring-web</exclude>
+                <exclude>org.springframework:spring-expression</exclude>
+                <exclude>org.springframework:spring-webmvc</exclude>
+            </excludes>
+        </dependencySet>
+    </dependencySets>
+
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}/classes</directory>
+            <outputDirectory>./</outputDirectory>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.basedir}</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>pom.xml</include>
+            </includes>
+        </fileSet>
+
+    </fileSets>
+</assembly>

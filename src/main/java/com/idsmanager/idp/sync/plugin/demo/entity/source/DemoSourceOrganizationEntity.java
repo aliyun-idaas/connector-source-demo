@@ -13,6 +13,22 @@ import com.idsmanager.idp.sync.core.infrastructure.source.SourceDataItem;
  * @since
  */
 public class DemoSourceOrganizationEntity extends DemoSourceBaseEntity implements SourceDataItem {
+    /**
+     * 组织名称
+     */
+    private String orgName;
+
+    /**
+     * 组织id
+     */
+    private String orgId;
+
+
+    /**
+     * 父级组织id
+     */
+    private String parentOrgId;
+
 
     @Override
     public String uniqueId() {
@@ -52,5 +68,29 @@ public class DemoSourceOrganizationEntity extends DemoSourceBaseEntity implement
     @Override
     public boolean isSupportRePush() {
         return false;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getParentOrgId() {
+        return parentOrgId;
+    }
+
+    public void setParentOrgId(String parentOrgId) {
+        this.parentOrgId = parentOrgId;
     }
 }

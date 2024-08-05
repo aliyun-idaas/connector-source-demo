@@ -54,6 +54,20 @@ public class DemoSourceDefaultAttributeDefiner {
 
         }
 
+        //组群
+        if (SyncObjectType.GROUP.equals(syncObjectType)) {
+            //TODO: 组群同上
+            //部门主键
+            AttributeDescriptor pkDept = new AttributeDescriptor("groupDept", "所属部门", "所属部门");
+            attributeDescriptors.add(pkDept);
+
+            //组织、部门common主键
+            AttributeDescriptor externalId = new AttributeDescriptor("externalId", "组群外部唯一标识", "组群外部唯一标识");
+            attributeDescriptors.add(externalId);
+
+
+        }
+
         return attributeDescriptors;
     }
 }

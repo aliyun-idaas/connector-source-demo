@@ -1,10 +1,7 @@
 package com.idsmanager.idp.sync.plugin.demo;
 
 import com.alibaba.fastjson.JSONObject;
-import com.idsmanager.idp.sync.InvalidConfigException;
-import com.idsmanager.idp.sync.MajorType;
-import com.idsmanager.idp.sync.MinorType;
-import com.idsmanager.idp.sync.SyncObjectType;
+import com.idsmanager.idp.sync.*;
 import com.idsmanager.idp.sync.core.infrastructure.ConnectionMetadataImpl;
 import com.idsmanager.idp.sync.core.infrastructure.ConnectionTestResult;
 import com.idsmanager.idp.sync.core.infrastructure.mapping.AttributeDescriptor;
@@ -15,6 +12,7 @@ import com.idsmanager.idp.sync.core.infrastructure.source.SourceConnectionPlugin
 import com.idsmanager.idp.sync.core.infrastructure.source.SourceDataPullClient;
 import com.idsmanager.idp.sync.plugin.demo.attribute.DemoAttributeGetter;
 import com.idsmanager.idp.sync.plugin.demo.attribute.DemoSourceDefaultAttributeDefiner;
+import com.idsmanager.idp.sync.plugin.demo.business.MetaBaseConstant;
 import com.idsmanager.idp.sync.plugin.demo.business.source.DemoSourceClientConfiguration;
 import com.idsmanager.idp.sync.plugin.demo.client.DemoSourceDataPullClient;
 import com.idsmanager.micro.commons.web.filter.RIDHolder;
@@ -42,49 +40,8 @@ public class DemoSourceConnectionMetadata extends ConnectionMetadataImpl impleme
      * 一般情况下，定义子类型即可，注意，子类型需要以 _SCHEMA 结尾，才能正常获取到表单json信息
      */
     public DemoSourceConnectionMetadata() {
-        super(MajorType.APP_STANDARD.name(), MinorType.DEMO_SCHEMA.name());
-    }
-
-    /**
-     * TODO 是否支持被动接同步数据-方法实现
-     *
-     * @return boolean true:支持 false：不支持
-     */
-    @Override
-    public boolean supportPassiveReception() {
-        return false;
-    }
-
-    /**
-     * TODO 是否支持被动接收指定类型的数据-方法实现
-     *
-     * @param syncObjectType 同步对象类型
-     * @return boolean true:支持 false：不支持
-     */
-    @Override
-    public boolean supportPassiveReception(SyncObjectType syncObjectType) {
-        return false;
-    }
-
-    /**
-     * TODO 是否支持主动拉取同步数据-方法实现 (页面可能会配置主动拉取，但是能不能拉取通过这里设定)
-     *
-     * @return boolean true:支持 false：不支持
-     */
-    @Override
-    public boolean supportInitiativePullData() {
-        return true;
-    }
-
-    /**
-     * TODO 是否支持主动拉取指定类型的数据-方法实现
-     *
-     * @return boolean true:支持 false：不支持
-     */
-    @Override
-    public boolean supportInitiativePullData(SyncObjectType syncObjectType) {
-//        return syncObjectType == SyncObjectType.USER || syncObjectType == SyncObjectType.ORGANIZATION;
-        return false;
+        super(MajorType.APP_STANDARD.name(), MajorType.APP_STANDARD.cnLabel,
+                MetaBaseConstant.MINORTYPE_NAME, MetaBaseConstant.MINORTYPE_NAME_CN);
     }
 
     /**
@@ -97,7 +54,6 @@ public class DemoSourceConnectionMetadata extends ConnectionMetadataImpl impleme
 
     /**
      * //TODO 解析前端传递的配置信息(前端将整个数据源配置对象转为了json字符串传到后端，后端需要自己解析得到具体参数值)
-     *
      **/
     private DemoSourceClientConfiguration parseJsonConfig(String jsonConfig) throws InvalidConfigException {
         JSONObject json = doValidate(jsonConfig);
@@ -114,6 +70,9 @@ public class DemoSourceConnectionMetadata extends ConnectionMetadataImpl impleme
         return new DemoSourceDataPullClient(convert(configuration));
     }
 
+    /**
+     * //TODO 将配置转为业务需要的配置类型
+     **/
     private DemoSourceClientConfiguration convert(SourceConnectionConfiguration configuration) throws InvalidConfigException {
         if (configuration instanceof DemoSourceClientConfiguration) {
             return (DemoSourceClientConfiguration) configuration;
@@ -124,12 +83,6 @@ public class DemoSourceConnectionMetadata extends ConnectionMetadataImpl impleme
         demoSourceClientConfiguration.setName(configuration.getName());
         return demoSourceClientConfiguration;
     }
-
-    @Override
-    public AttributeGetter getAttributeGetter() {
-        return new DemoAttributeGetter();
-    }
-
 
     /**
      * 校验创建来源时，提交的表单json参数
@@ -177,6 +130,64 @@ public class DemoSourceConnectionMetadata extends ConnectionMetadataImpl impleme
     }
 
 
+
+    /**
+     * //TODO 定义拉取模式，可不定义，默认AD_SCHEME模式
+     **/
+    @Override
+    public PullScheme loadPullScheme() {
+        return null;
+    }
+
+    /**
+     * TODO 是否支持被动接同步数据-方法实现
+     *
+     * @return boolean true:支持 false：不支持
+     */
+    @Override
+    public boolean supportPassiveReception() {
+        return false;
+    }
+
+    /**
+     * TODO 是否支持被动接收指定类型的数据-方法实现
+     *
+     * @param syncObjectType 同步对象类型
+     * @return boolean true:支持 false：不支持
+     */
+    @Override
+    public boolean supportPassiveReception(SyncObjectType syncObjectType) {
+        return false;
+    }
+
+    /**
+     * TODO 是否支持主动拉取同步数据-方法实现 (页面可能会配置主动拉取，但是能不能拉取通过这里设定)
+     *
+     * @return boolean true:支持 false：不支持
+     */
+    @Override
+    public boolean supportInitiativePullData() {
+        return true;
+    }
+
+    /**
+     * TODO 是否支持主动拉取指定类型的数据-方法实现
+     *
+     * @return boolean true:支持 false：不支持
+     */
+    @Override
+    public boolean supportInitiativePullData(SyncObjectType syncObjectType) {
+//        return syncObjectType == SyncObjectType.USER || syncObjectType == SyncObjectType.ORGANIZATION;
+        return false;
+    }
+
+
+    @Override
+    public AttributeGetter getAttributeGetter() {
+        return new DemoAttributeGetter();
+    }
+
+
     /**
      * 在配置源和目标的属性映射时，首先要获取源默认支持哪些属性，该方法用于获取源默认支持的属性集合。
      * 在实际配置时，一个源的具体配置实例，支持的属性是可能与默认支持的属性集合不同的，比如IDP中的用
@@ -192,5 +203,20 @@ public class DemoSourceConnectionMetadata extends ConnectionMetadataImpl impleme
     @Override
     public Collection<AttributeDescriptor> listDefaultSupportedAttributes(SyncObjectType syncObjectType) {
         return attribute.define(syncObjectType);
+    }
+
+    @Override
+    public String description() {
+        return "这是描述-来源demo test";
+    }
+
+    @Override
+    public String documentUrl() {
+        return null;
+    }
+
+    @Override
+    public String icon() {
+        return icon("img/ad.jpg");
     }
 }

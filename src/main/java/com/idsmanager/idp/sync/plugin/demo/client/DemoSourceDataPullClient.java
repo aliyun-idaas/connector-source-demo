@@ -11,10 +11,13 @@ import com.idsmanager.idp.sync.core.infrastructure.DelegateAuthentication;
 import com.idsmanager.idp.sync.core.infrastructure.mapping.AttributeDescriptor;
 import com.idsmanager.idp.sync.core.infrastructure.source.SourceDataItem;
 import com.idsmanager.idp.sync.core.infrastructure.source.SourceDataPullClient;
+import com.idsmanager.idp.sync.log.ConnectorPluginLogger;
 import com.idsmanager.idp.sync.plugin.demo.attribute.DemoSourceDefaultAttributeDefiner;
+import com.idsmanager.idp.sync.plugin.demo.business.service.DemoSourceService;
 import com.idsmanager.idp.sync.plugin.demo.business.source.DemoSourceClientConfiguration;
 import com.idsmanager.idp.sync.plugin.demo.entity.source.DemoSourceAccountEntity;
 import com.idsmanager.idp.sync.plugin.demo.entity.source.DemoSourceOrganizationEntity;
+import com.idsmanager.micro.commons.utils.DateUtils;
 import com.idsmanager.micro.commons.web.filter.RIDHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,13 +38,15 @@ public class DemoSourceDataPullClient implements SourceDataPullClient {
 
     private DemoSourceClientConfiguration configuration;
 
+    private DemoSourceService demoSourceService;
+
     public DemoSourceDataPullClient(DemoSourceClientConfiguration configuration) {
         this.configuration = configuration;
     }
 
     /**
      * TODO 分页模式拉取数据-方法声明
-     * 按需实现
+     * 按需实现（对应PAGE_SCHEME）
      *
      * @param syncObjectType 对象类型
      * @param context        任务执行的上下文
@@ -56,7 +61,7 @@ public class DemoSourceDataPullClient implements SourceDataPullClient {
 
     /**
      * TODO 拉取常规的指定对象类型的数据--方法实现
-     *
+     * 对应 CLASSIC
      * @param syncObjectType    对象类型
      * @param mode              拉取方式，增量或者全量
      * @param context           任务执行的上下文
@@ -69,20 +74,19 @@ public class DemoSourceDataPullClient implements SourceDataPullClient {
             throw new SCIMException(SyncErrorCode.SCIM_ERR_UNSUPPORTED_OBJECT_TYPE, "不支持的同步对象类型[" + syncObjectType + "]");
         }
         List<SourceDataItem> items = new ArrayList<>();
-
         //TODO 按实际需求实现数据拉取
         //如果是增量查询的话需要拼接查询条件
         if (context.getTask().incrSync() && context.lastSuccessTime() != null) {
             Date begainTimeDate = context.lastSuccessTime();
-//            String begainTime = parseDateToString(begainTimeDate);
-//            LOG.warn("[{}]-获取到上次更新时间 begainTime ：{}", RIDHolder.id(), begainTime);
+            String begainTime = DateUtils.toDateText(begainTimeDate, "yyyy-MM-dd HH:mm:ss");
+            ConnectorPluginLogger.warn("[{}]-获取到上次更新时间 begainTime ：{}", RIDHolder.id(), begainTime);
             //拉取数据
             switch (syncObjectType) {
                 case ORGANIZATION:
-//                    items = service.getOrgsByTime(begainTime);
+                    items = demoSourceService.getOrgsByTime(begainTime);
                     break;
                 case USER:
-//                    items = service.getUserByTime(begainTime);
+                    items = demoSourceService.getUserByTime(begainTime);
                     break;
                 default:
                     break;
@@ -94,10 +98,10 @@ public class DemoSourceDataPullClient implements SourceDataPullClient {
             //拉取数据
             switch (syncObjectType) {
                 case ORGANIZATION:
-//                    items = service.getOrgsByParentCode(parentDeptId, context.getTask().incrSync());
+                    items = demoSourceService.getOrgsByParentCode(parentDeptId, context.getTask().incrSync());
                     break;
                 case USER:
-//                    items = service.getUserByOrgCode(parentDeptId, context.getTask().incrSync());
+                    items = demoSourceService.getUserByOrgCode(parentDeptId, context.getTask().incrSync());
                     break;
                 default:
                     break;
@@ -122,7 +126,7 @@ public class DemoSourceDataPullClient implements SourceDataPullClient {
     /**
      * TODO 拉取指定的组织机构的直属的子组织机构或者直属用户，只查询一级
      * 按需实现
-     *
+     * 默认实现（对应AD_SCHEME）
      * @param syncObjectType 要拉取的数据类型，组织机构或者数据
      * @param context        本次操作的上下文对象
      * @param parent         父级
@@ -150,10 +154,10 @@ public class DemoSourceDataPullClient implements SourceDataPullClient {
         List<SourceDataItem> items = null;
         switch (syncObjectType) {
             case ORGANIZATION:
-//                items = service.getOrgsByParentCode(parentDeptId, context.getTask().incrSync());
+                items = demoSourceService.getOrgsByParentCode(parentDeptId, context.getTask().incrSync());
                 break;
             case USER:
-//                items = service.getUserByOrgCode(parentDeptId, context.getTask().incrSync());
+                items = demoSourceService.getUserByOrgCode(parentDeptId, context.getTask().incrSync());
                 break;
             default:
                 break;
@@ -182,6 +186,11 @@ public class DemoSourceDataPullClient implements SourceDataPullClient {
     }
 
     @Override
+    public SourceDataItem buildSourceItemByJson(String sourceJson, SyncObjectType syncObjectType) {
+        return null;
+    }
+
+//    @Override
     public SourceDataItem buildSourceItemByJson(String sourceJson) {
         return null;
     }
@@ -242,4 +251,5 @@ public class DemoSourceDataPullClient implements SourceDataPullClient {
     public Collection<AttributeDescriptor> listSupportedAttributes(SyncObjectType syncObjectType) {
         return attribute.define(syncObjectType);
     }
+
 }

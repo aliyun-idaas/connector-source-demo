@@ -2,21 +2,92 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>idp4-sync</artifactId>
-        <groupId>com.idsmanager.sync</groupId>
-        <version>4.16.0-alpha</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>sync-plugin-demo</artifactId>
+    <groupId>com.idsmanager.connector</groupId>
+    <artifactId>sync-plugin-source-demo</artifactId>
+    <version>1.0.0</version>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+    </properties>
 
 
     <dependencies>
+        <!--        <dependency>-->
+        <!--            <groupId>com.idsmanager.micro</groupId>-->
+        <!--            <artifactId>sync-engine</artifactId>-->
+        <!--            <version>4.21.1-GA</version>-->
+        <!--        </dependency>-->
         <dependency>
-            <groupId>com.idsmanager.sync</groupId>
-            <artifactId>sync-engine</artifactId>
-            <version>${parent.version}</version>
+            <groupId>com.idsmanager.micro</groupId>
+            <artifactId>sync-core</artifactId>
+            <version>4.22.0-GA</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <skip>${test.skip}</skip>
+                    <forkMode>none</forkMode>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <!--       如果没有用到第三方包，可以注释下面的插件，打包的jar只包含插件的本身代码，不会生成包含jar-with-plugin的文件       -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>${basedir}/src/main/assembly/assembly-plugin.xml</descriptor>
+                    </descriptors>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <addMavenDescriptor>true</addMavenDescriptor>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

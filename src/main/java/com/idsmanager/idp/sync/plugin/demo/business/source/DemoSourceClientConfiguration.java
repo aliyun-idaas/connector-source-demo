@@ -12,4 +12,12 @@ import com.idsmanager.idp.sync.plugin.demo.business.DemoConfiguration;
  * @since
  */
 public class DemoSourceClientConfiguration extends DemoConfiguration implements SourceConnectionConfiguration {
+    /**
+     * 是否把来源的根节点，作为目标的一级子节点同步，直接挂靠在目标根节点下
+     * @return
+     */
+    @Override
+    public boolean syncSourceRootToTargetRoot() {
+        return false;
+    }
 }
